@@ -8,6 +8,8 @@ import Home from './pages/Home'
 import Profile from './pages/Profile'
 import Categories from './pages/Categories'
 import Products from './pages/Products'
+import Orders from './pages/orders/Orders'
+import CreateOrder from './pages/orders/CreateOrder'
 
 function App() { //parent
   return (
@@ -17,6 +19,8 @@ function App() { //parent
         <Route path="/profile" element={<Profile />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/orders/create" element={<CreateOrder />} />
       </Routes>
     </BrowserRouter>
   )

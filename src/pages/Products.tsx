@@ -85,6 +85,15 @@ function Products() {
         }
     }
 
+    async function deleteProduct(productId: number) {
+        try {
+            await axios.delete(`http://localhost:8081/products/${productId}`);
+            getProducts();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="container mx-auto pt-5 pb-5">
             <h1 className="text-3xl font-semibold mb-5 text-slate-800">
@@ -110,8 +119,10 @@ function Products() {
                                 <td className="p-2 text-slate-600 text-right border-b border-slate-200">{product.price}</td>
                                 <td className="p-2 text-slate-600 border-b border-slate-200">{product.category.name}</td>
                                 <td className="p-2 border-b border-slate-200">
-                                    <button type="button"
+                                    <button className="me-3" type="button"
                                         onClick={() => editProduct(product)}>Edit</button>
+                                    <button type="button"
+                                        onClick={() => deleteProduct(product.id)}>Delete</button>       
                                 </td>
                             </tr>
                         )
