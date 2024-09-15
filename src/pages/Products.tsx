@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import ProductType from "../types/ProductType";
 import axios from "axios";
 import CategoryType from "../types/CategoryType";
+import { useAuth } from "../context/AuthContext";
 
 function Products() {
+
+    
 
     const [products, setProducts] = useState<ProductType[]>([]);
 
@@ -30,14 +33,21 @@ function Products() {
         setDescription(event.target.value);
     }
 
+    const { isAuthenticated, jwtToken } = useAuth();
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${jwtToken}`
+        }
+    }
     //api request to get products
     async function getProducts() {
-        const response = await axios.get("http://localhost:8081/products");
+        const response = await axios.get("http://localhost:8081/products", config);
         setProducts(response.data);
     }
 
     async function loadCategories() {
-        const apiResponse = await axios.get("http://localhost:8081/categories");
+        const apiResponse = await axios.get("http://localhost:8081/categories", config);
         setCategories(apiResponse.data);
     }
 
@@ -47,14 +57,16 @@ function Products() {
             price: productPrice,
             categoryId: categoryId,
             description: description
-        });
+        }, config);
         getProducts();
     }
 
     useEffect(function () {
-        getProducts();
-        loadCategories();
-    }, [])
+        if (isAuthenticated) {
+            getProducts();
+            loadCategories();
+        }
+    }, [isAuthenticated])
 
     const [productEditing, setProductEditing] = useState<ProductType | null>();
 
@@ -122,7 +134,7 @@ function Products() {
                                     <button className="me-3" type="button"
                                         onClick={() => editProduct(product)}>Edit</button>
                                     <button type="button"
-                                        onClick={() => deleteProduct(product.id)}>Delete</button>       
+                                        onClick={() => deleteProduct(product.id)}>Delete</button>
                                 </td>
                             </tr>
                         )

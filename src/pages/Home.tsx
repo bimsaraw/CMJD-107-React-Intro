@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Student from "../components/Student";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
     
@@ -20,12 +21,19 @@ function Home() {
   function handleUsername(event: any) {
     setUsername(event.target.value);
   }
+
+  const { isAuthenticated, login, logout } = useAuth();
   
   return (
     <>
       <h1>Welcome {username}!</h1>
 
       <Link to="/profile">Profile</Link>
+      <Link to="/products">Products</Link>
+      <Link to="/orders">Orders</Link>
+      <Link to="/categories">Categories</Link>
+
+      {isAuthenticated ? <button type="button" onClick={logout}>Logout</button> : "Not Logged In"}
 
       <div>
         <p>Login with your username</p>
